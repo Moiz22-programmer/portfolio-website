@@ -20,8 +20,14 @@ const Loading = ({ percent }: { percent: number }) => {
   }
 
   useEffect(() => {
+    // Fail-safe: if loading hangs for more than 10 seconds, force start
+    const failSafe = setTimeout(() => {
+       setIsLoading(false);
+    }, 10000);
+
     import("./utils/initialFX").then((module) => {
       if (isLoaded) {
+        clearTimeout(failSafe);
         setClicked(true);
         setTimeout(() => {
           if (module.initialFX) {
@@ -31,6 +37,7 @@ const Loading = ({ percent }: { percent: number }) => {
         }, 900);
       }
     });
+    return () => clearTimeout(failSafe);
   }, [isLoaded]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
@@ -46,7 +53,7 @@ const Loading = ({ percent }: { percent: number }) => {
     <>
       <div className="loading-header">
         <a href="/#" className="loader-title" data-cursor="disable">
-          Logo
+          MOEEZ
         </a>
         <div className={`loaderGame ${clicked && "loader-out"}`}>
           <div className="loaderGame-container">
