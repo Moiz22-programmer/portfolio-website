@@ -34,17 +34,16 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       <Cursor />
       <Navbar />
       <SocialIcons />
+      {isDesktopView && children}
       <div id="smooth-wrapper">
         <div id="smooth-content">
           <div className="container-main">
-            <Landing>
-              <Suspense fallback={null}>{children}</Suspense>
-            </Landing>
+            <Landing>{!isDesktopView && children}</Landing>
             <About />
             <WhatIDo />
             <Career />
             <Work />
-            <Suspense fallback={<div>Loading Area....</div>}>
+            <Suspense fallback={<div>Loading....</div>}>
               <TechStack />
             </Suspense>
             <Contact />
